@@ -2,11 +2,12 @@ package org.example.repository;
 
 import org.example.model.Post;
 import org.example.exception.NotFoundException;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-// Stub
+@Repository
 public class PostRepository {
     private final List<Post> listPost = new CopyOnWriteArrayList<>();
     private int size = 0;

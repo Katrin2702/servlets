@@ -1,7 +1,7 @@
 package org.example.servlet;
 
-import org.example.config.Config;
 import org.example.controller.PostController;
+import org.example.exception.NotFoundException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.servlet.http.HttpServlet;
@@ -13,7 +13,7 @@ public class MainServlet extends HttpServlet {
 
     @Override
     public void init() {
-        final var context = new AnnotationConfigApplicationContext(Config.class);
+        final var context = new AnnotationConfigApplicationContext("org.example");
         this.controller = context.getBean(PostController.class);
     }
 
@@ -39,7 +39,10 @@ public class MainServlet extends HttpServlet {
                 // easy way
                 final var id = Long.parseLong(path.substring(path.lastIndexOf("/") + 1));
                 controller.removeById(id, resp);
+            } else {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
+        } catch (NotFoundException | NumberFormatException exception) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } catch (Exception e) {
             e.printStackTrace();
